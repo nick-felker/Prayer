@@ -1,11 +1,15 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Image, StyleSheet} from 'react-native';
+import WelcomePage from './src/components/welcome/welcome';
 
 const HelloWorldApp = () => {
   return (
-    <View>
-      <Text>Hello, world!</Text>
-    </View>
+      <>
+       <WelcomePage/>
+      </>
   );
 };
+
+
+
 export default HelloWorldApp;
