@@ -4,20 +4,15 @@ import { Button, StyleSheet, Text, View } from "react-native";
 
 interface Props{
     name: string;
-    id: string; 
-}
-
-function redirect(){
-   
+    id: string;
+    author: string;
 }
 
 const Task = (props:Props) =>{
     return(
         <>
            
-           <View style={styles.outerBox}>
-                <Text style={styles.taskText}>{props.name}</Text>
-            </View>
+           
         </>
     )
 }

@@ -1,15 +1,18 @@
+import MainStack from './src/navigate';
 import React from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
-import WelcomePage from './src/components/welcome/welcome';
+import { Provider } from 'react-redux';
+import { store } from './src/store/store';
 
-const HelloWorldApp = () => {
+
+
+const App = () => {
   return (
-      <>
-       <WelcomePage/>
-      </>
+        <Provider store={store}>
+        <MainStack></MainStack>
+        </Provider>
   );
 };
 
 
 
-export default HelloWorldApp;
+export default App;

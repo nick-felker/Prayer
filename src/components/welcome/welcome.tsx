@@ -1,46 +1,29 @@
-import React, { useRef, useState } from 'react';
-import {Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, TextInput, Button} from 'react-native';
+import React, { useState } from 'react';
+import { RootState } from '../../store/store';
+import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Task from '../task/task';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { taskSelector } from '../../store/reducers/task';
+import { TaskType } from '../../../types/type';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
 
 
 const plusIcon = ('../../images/Plus.png');
-const WelcomePage = () =>{
 
-    interface Task{
-        name: string;
-        id: string;
-    }
+interface WelcomePageProps{
+    navigation: any;
+}
 
+const WelcomePage = (props:WelcomePageProps) =>{
 
-    const [taskData, setTaskData] = useState<Task[]>([
-        {name: 'ToDo', id: Math.random().toString()},
-        {name: 'Testing', id: Math.random().toString()},
-        {name: 'Completed', id: Math.random().toString()},
-        {name: 'In progress', id: Math.random().toString()},
-        {name: 'Smth', id: Math.random().toString()}
-    ])
-    const [addTaskFlag, setAddTaskFlag] = useState(false);
-    const [newTaskName, setNewTaskName] = useState('');
-    
-    function changeStateTask(text:string){
-        setNewTaskName(text);
-    }
-    function addTask(){
-        const newTask = {name: newTaskName, id: Math.random().toString()};
-        taskData.push(newTask);
-        setTaskData(taskData);
-        setNewTaskName('')
-        setAddTaskFlag(false);
-    }
-
-
+    const dispatch = useAppDispatch();
+    const tasks = useAppSelector(taskSelector);
     return(
         <>
-       
         <View style={WelcomeStyles.HeaderBlock}>
             <Text style={WelcomeStyles.title}>My Desk</Text>
             <View style={WelcomeStyles.underTitleLine}/>
-            <TouchableOpacity onPress={()=>{setAddTaskFlag(true)}} style={WelcomeStyles.tinyLogo} >
+            <TouchableOpacity onPress={()=>{props.navigation.navigate('Add task')}} style={WelcomeStyles.tinyLogo} >
                 <Image
                     source={require(plusIcon)}
                 />
@@ -48,25 +31,20 @@ const WelcomePage = () =>{
         </View>
             
             <View style={WelcomeStyles.tasksContainer}>
-                {taskData.map((task:Task)=>{return <Task key={task.id} id={task.id} name={task.name}></Task>})}
+                {tasks.map((task:TaskType)=>{return (
+                    <TouchableOpacity onPress={()=>{}} style={WelcomeStyles.outerBox}>
+                        <Text key={task.id} style={WelcomeStyles.taskText}>{task.name}</Text>
+                    </TouchableOpacity>
+                    
+                
+                )})}
+                
             </View>
-            <Modal visible={addTaskFlag}>
-               <View style={AddTaskModal.outerModalContainer}>
-                    <Text style={AddTaskModal.title}>ADD A NEW TASK</Text>
-                    <TextInput style={AddTaskModal.addTaskInput} placeholder='put here your`s task name' onChangeText={changeStateTask}></TextInput>
-                    <Button title='Submit' onPress={addTask}></Button>
-               </View>
-
-            </Modal>
         </>
     )
 }
 
 const WelcomeStyles = StyleSheet.create({
-    bebra:{
-        padding: 10,
-        backgroundColor: 'red',
-    },
     tinyLogo:{
         width: 20,
         height: 20,
@@ -98,26 +76,22 @@ const WelcomeStyles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-    }
-})
-
-const AddTaskModal = StyleSheet.create({
-    outerModalContainer:{
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
     },
-    title:{
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: 100,
-        color: 'black'
-    },
-    addTaskInput:{
+    outerBox:{
+        borderColor: '#E5E5E5',
+        borderRadius: 5,
         position: 'relative',
-        textAlign: 'center',
-        
+        borderWidth: 2,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 15,
+        width: '90%',
+        borderStyle: 'solid',
+        marginBottom: 10,
+    },
+    taskText:{
+        fontSize: 20,
+        color: 'black'
     }
 })
 
